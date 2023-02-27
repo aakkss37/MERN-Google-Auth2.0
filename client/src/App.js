@@ -26,8 +26,9 @@ function App () {
 							scope="openid profile email"
 							discoveryDocs="claims_supported"
 							access_type="offline"
-							onResolve={({ provider, data }) => {
+							onResolve={ ({ provider, data }) => {
 								handleLoginResponce(data)
+								console.log(data)
 							}}
 							onReject={err => {
 								console.log(err);
@@ -38,7 +39,7 @@ function App () {
 						</LoginSocialGoogle>
 						:
 						<div>
-							<img src={user.img} alt='proPic' />
+							<img src={user.img} alt='proPic'  style={{borderRadius: "50%"}}/>
 							<h2>Welcome {user.name}</h2>
 							<span>{user.email}</span>
 							<br />
