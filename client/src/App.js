@@ -2,18 +2,27 @@ import React, { useState } from 'react'
 import './App.css';
 import { LoginSocialGoogle } from 'reactjs-social-login';
 import { GoogleLoginButton } from 'react-social-login-buttons';
+import axios from 'axios';
 const client_id = process.env.REACT_APP_CLIENT_ID
-
 
 
 function App () {
 	const [user, setUser] = useState();
-	const handleLoginResponce = (data) => {
+	const handleLoginResponce = async (data) => {
+		// console.log("tokenID==>>>>",data.access_token)
 		setUser({
 			name: data.name,
 			email: data.email,
 			img: data.picture
 		})
+		try {
+			const resp = await axios.post("http://localhost:8000/",{
+				access_token: data.access_token,
+			})
+			console.log(resp)
+		} catch (error) {
+			console.log(error)
+		}
 	}
 
 	return (
@@ -34,6 +43,7 @@ function App () {
 								console.log(err);
 							}}
 							hosted_domain="kahedu.edu.in"
+							fetch_basic_profile={true}
 						>
 							<GoogleLoginButton />
 						</LoginSocialGoogle>
