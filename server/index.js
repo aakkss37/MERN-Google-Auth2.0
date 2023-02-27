@@ -20,9 +20,9 @@ mongooseConnection();
 
 
 
-// // ROUTES
-// import router from './router/route.js';
-// app.use('/', router)
+// ROUTES
+import router from './router/route.js';
+app.use('/', router)
 
 
 
