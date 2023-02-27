@@ -13,9 +13,9 @@ app.use(cors());
 
 
 
-// // DATABASE CONNECTION
-// import mongooseConnection from './database/db.js';
-// mongooseConnection();
+// DATABASE CONNECTION
+import mongooseConnection from './db/db.js';
+mongooseConnection();
 
 
 
