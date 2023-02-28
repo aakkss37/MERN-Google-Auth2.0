@@ -1,5 +1,5 @@
 import axios from 'axios';
-import User from '../../model/userShema';
+import User from '../../model/userShema.js';
 import jwt from 'jsonwebtoken';
 
 export const loginUser = async(req, resp)=> {
