@@ -2,6 +2,20 @@ import axios from 'axios';
 import User from '../../model/userShema.js';
 import jwt from 'jsonwebtoken';
 
+
+
+
+const createToken = async()=> {
+	const accessTokan = jwt.sign(user.toJSON(), process.env.ACCESS_TOKEN_SECRET_KEY, { expiresIn: '15m' });
+	const refreshToken = jwt.sign(user.toJSON(), process.env.REFRESH_TOKEN_SECRET_KEY);
+	const newToken = await Token.create({ token: refreshToken });
+	newToken.save();
+}
+
+
+
+
+
 export const loginUser = async(req, resp)=> {
 	// console.log("body ===>>> ",req.body);
 	const access_token = req.body.access_token
@@ -13,10 +27,38 @@ export const loginUser = async(req, resp)=> {
 				"Accept": 'application/json'
 			}
 		})
+		// console.log("incomming data==> ",responce.data)
 
-		console.log("incomming data==> ",responce.data)
+		const user = await User.findOne({ googleID: responce.data.id });
+		if (!user) {
+			const userData = {
+				googleID: responce.data.id,
+				name: responce.data.name,
+				email: responce.data.email,
+				picture: responce.data.picture
+			}
+			console.log("user data===> ", userData)
+			const newUser = await User.create(userData);
+			await newUser.save();
+
+			console.log("newUser =====>>>>>>>>> ", newUser)
+			// const tokens = await createToken()
+
+			// return resp.status(200).json({
+			// 	jwtAccessToken: "",
+			// 	jwtRefreshToken: "",
+			// 	name: responce.name,
+			// 	email: responce.email,
+			// 	picture: responce.picture
+			// })
+		} else {
+			const user = await User.findOne({ googleID: responce.data.id });
+			console.log("user =====>>>>>>>>> ", user)
+		}
+
 	} catch (error) {
 		console.log(error)
+		return resp.status(403).json({ msg: "invalid token" });
 	}
 
 }
