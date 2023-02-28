@@ -11,17 +11,19 @@ const Login = (props) => {
 	
 	const handleLoginResponce = async (data) => {
 		// console.log("tokenID==>>>>",data.access_token)
-		props.setUser({
-			name: data.name,
-			email: data.email,
-			img: data.picture
-		})
 		navigate('/home')
 		try {
-			const resp = await axios.post("http://localhost:8000/", {
+			const responce = await axios.post("http://localhost:8000/", {
 				access_token: data.access_token,
 			})
-			console.log(resp.data)
+			// console.log(resp.data)
+			sessionStorage.setItem('accessToken', `Bearer ${responce.data.jwtAccessToken}`) //SESSION STORAGE
+			sessionStorage.setItem('refreshToken', `Bearer ${responce.data.jwtRefreshToken}`)
+			props.setUser({
+				name: responce.data.name,
+				email: responce.data.email,
+				img: responce.data.picture
+			})
 		} catch (error) {
 			console.log(error)
 		}
