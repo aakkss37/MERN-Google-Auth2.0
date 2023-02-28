@@ -1,7 +1,7 @@
 import axios from 'axios';
 import User from '../../model/userShema.js';
 import jwt from 'jsonwebtoken';
-
+import Token from '../../db/token.js';
 
 
 
@@ -10,6 +10,8 @@ const createToken = async(user)=> {
 	const refreshToken = jwt.sign(user.toJSON(), process.env.REFRESH_TOKEN_SECRET_KEY);
 	const newToken = await Token.create({ token: refreshToken });
 	newToken.save();
+
+	return {accessTokan: accessTokan, refreshToken: refreshToken}
 }
 
 
@@ -42,15 +44,15 @@ export const loginUser = async(req, resp)=> {
 			await newUser.save();
 
 			// console.log("newUser =====>>>>>>>>> ", newUser)
-			const tokens = await createToken(newUser)
+			const {accessTokan, refreshToken} = await createToken(newUser)
 
-			// return resp.status(200).json({
-			// 	jwtAccessToken: "",
-			// 	jwtRefreshToken: "",
-			// 	name: responce.name,
-			// 	email: responce.email,
-			// 	picture: responce.picture
-			// })
+			return resp.status(200).json({
+				jwtAccessToken: accessTokan,
+				jwtRefreshToken: refreshToken,
+				name: responce.name,
+				email: responce.email,
+				picture: responce.picture
+			})
 		} else {
 			const user = await User.findOne({ googleID: responce.data.id });
 			const tokens = await createToken(user)
