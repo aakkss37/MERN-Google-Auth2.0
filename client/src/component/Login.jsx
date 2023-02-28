@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { LoginSocialGoogle } from 'reactjs-social-login';
 import { GoogleLoginButton } from 'react-social-login-buttons';
 import axios from 'axios';
@@ -6,12 +6,47 @@ import { useNavigate } from 'react-router-dom';
 const client_id = process.env.REACT_APP_CLIENT_ID
 
 
+const validateAccessTokan = async (aaccessToken) => {
+	try {
+		const responce = await axios.post("http://localhost:8000/validate-access-tokan", {
+			aaccessToken: aaccessToken
+		});
+
+		console.log(responce.data);
+		return responce.data
+	} catch (error) {
+		console.log(error);
+	}
+}
+
+
+
 const Login = (props) => {
 	const navigate = useNavigate();
+
+
+
+	useEffect(() => {
+		const aaccessToken = sessionStorage.getItem("accessToken");
+		console.log("aaccessToken from session ==>>>>>>>>", aaccessToken)
+		const validateToken = async () => {
+			if (aaccessToken) {
+				const userData = await validateAccessTokan(aaccessToken)
+				console.log(userData)
+				props.setUser(userData);
+				navigate('/home')
+			}
+		}
+		validateToken();
+	}, []);
+
+
+
+
 	
 	const handleLoginResponce = async (data) => {
 		// console.log("tokenID==>>>>",data.access_token)
-		navigate('/home')
+		
 		try {
 			const responce = await axios.post("http://localhost:8000/", {
 				access_token: data.access_token,
@@ -24,6 +59,8 @@ const Login = (props) => {
 				email: responce.data.email,
 				img: responce.data.picture
 			})
+
+			navigate('/home')
 		} catch (error) {
 			console.log(error)
 		}
