@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 
 
 
-const createToken = async()=> {
+const createToken = async(user)=> {
 	const accessTokan = jwt.sign(user.toJSON(), process.env.ACCESS_TOKEN_SECRET_KEY, { expiresIn: '15m' });
 	const refreshToken = jwt.sign(user.toJSON(), process.env.REFRESH_TOKEN_SECRET_KEY);
 	const newToken = await Token.create({ token: refreshToken });
@@ -41,8 +41,8 @@ export const loginUser = async(req, resp)=> {
 			const newUser = await User.create(userData);
 			await newUser.save();
 
-			console.log("newUser =====>>>>>>>>> ", newUser)
-			// const tokens = await createToken()
+			// console.log("newUser =====>>>>>>>>> ", newUser)
+			const tokens = await createToken(newUser)
 
 			// return resp.status(200).json({
 			// 	jwtAccessToken: "",
@@ -53,6 +53,7 @@ export const loginUser = async(req, resp)=> {
 			// })
 		} else {
 			const user = await User.findOne({ googleID: responce.data.id });
+			const tokens = await createToken(user)
 			console.log("user =====>>>>>>>>> ", user)
 		}
 
