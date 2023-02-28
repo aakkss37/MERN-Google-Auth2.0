@@ -20,7 +20,7 @@ const PrivateRoute = (props) => (
 function App () {
 
 	const [user, setUser] = useState();
-	console.log(user)
+	// console.log(user)
 	return (
 		<BrowserRouter>
 			<div className="App">

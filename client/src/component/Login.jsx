@@ -21,7 +21,7 @@ const Login = (props) => {
 			const resp = await axios.post("http://localhost:8000/", {
 				access_token: data.access_token,
 			})
-			console.log(resp)
+			console.log(resp.data)
 		} catch (error) {
 			console.log(error)
 		}
