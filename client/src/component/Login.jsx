@@ -2,11 +2,12 @@ import React from 'react'
 import { LoginSocialGoogle } from 'reactjs-social-login';
 import { GoogleLoginButton } from 'react-social-login-buttons';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 const client_id = process.env.REACT_APP_CLIENT_ID
 
 
 const Login = (props) => {
-
+	const navigate = useNavigate();
 	
 	const handleLoginResponce = async (data) => {
 		// console.log("tokenID==>>>>",data.access_token)
@@ -15,6 +16,7 @@ const Login = (props) => {
 			email: data.email,
 			img: data.picture
 		})
+		navigate('/home')
 		try {
 			const resp = await axios.post("http://localhost:8000/", {
 				access_token: data.access_token,
