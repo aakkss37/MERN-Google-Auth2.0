@@ -14,7 +14,11 @@ export const ValidateJWT = (req, resp, next) => {
 			return resp.status(403).json({ msg: "invalid token" });
 		}
 		// console.log("request ==> ", req);
-		console.log("user value: ===> ", user)
-		next();
+		// console.log("user value: ===> ", user)
+		return resp.status(200).json({
+			name: user.name,
+			email: user.email,
+			picture: user.picture
+		})
 	})
 }

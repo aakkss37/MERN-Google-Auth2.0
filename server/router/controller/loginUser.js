@@ -57,7 +57,7 @@ export const loginUser = async(req, resp)=> {
 		} else {
 			const user = await User.findOne({ googleID: responce.data.id });
 			const { accessTokan, refreshToken } = await createToken(user)
-			// console.log("user =====>>>>>>>>> ", user)
+			console.log("user =====>>>>>>>>> ", user)
 			return resp.status(200).json({
 				jwtAccessToken: accessTokan,
 				jwtRefreshToken: refreshToken,

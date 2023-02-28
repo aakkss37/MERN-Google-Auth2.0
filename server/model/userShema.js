@@ -19,7 +19,10 @@ const userSchema = new mongoose.Schema({
 	picture: {
 		type:String,
 		required: true
-	}
+	},
+	phone: String,
+	cgpa: String,
+	activeBack: Boolean,
 })
 
 const User = mongoose.model('User', userSchema);
