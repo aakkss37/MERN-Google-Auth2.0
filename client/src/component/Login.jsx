@@ -12,7 +12,7 @@ const validateAccessTokan = async (aaccessToken) => {
 			aaccessToken: aaccessToken
 		});
 
-		console.log(responce.data);
+		// console.log(responce.data);
 		return responce.data
 	} catch (error) {
 		console.log(error);
@@ -32,12 +32,13 @@ const Login = (props) => {
 		const validateToken = async () => {
 			if (aaccessToken) {
 				const userData = await validateAccessTokan(aaccessToken)
-				console.log(userData)
+				// console.log(userData)
 				props.setUser(userData);
 				navigate('/home')
 			}
 		}
 		validateToken();
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 
