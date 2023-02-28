@@ -1,4 +1,6 @@
 import axios from 'axios';
+import User from '../../model/userShema';
+import jwt from 'jsonwebtoken';
 
 export const loginUser = async(req, resp)=> {
 	// console.log("body ===>>> ",req.body);
@@ -11,6 +13,7 @@ export const loginUser = async(req, resp)=> {
 				"Accept": 'application/json'
 			}
 		})
+
 		console.log("incomming data==> ",responce.data)
 	} catch (error) {
 		console.log(error)
