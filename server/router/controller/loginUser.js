@@ -2,7 +2,8 @@ import axios from 'axios';
 import User from '../../model/userShema.js';
 import jwt from 'jsonwebtoken';
 import Token from '../../db/token.js';
-
+import dotenv from 'dotenv';
+dotenv.config();
 
 
 const createToken = async(user)=> {
